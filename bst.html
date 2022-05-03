@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+<script type="text/javascript">
+class Create_Node
+{
+	constructor(value)
+  {
+		this.data_part = value;
+		this.left_part = null;
+		this.right_part = null;
+	}
+}
+function new_node(value)
+{
+    var temporary = new Create_Node();
+		temporary.data_part = value;
+		temporary.left_part = temporary.right_part = null;
+		return temporary;
+}
+function inorder_traversal(root_node)
+{
+		if (root_node != null)
+    {
+		  inorder_traversal(root_node.left_part);
+			document.write(root_node.data_part + " ");
+		  inorder_traversal(root_node.right_part);
+		}
+}
+function data_insert(ptr , data_part)
+{
+		if (ptr == null)
+			return new_node(data_part);
+		if (data_part < ptr.data_part)
+		  ptr.left_part =data_insert(ptr.left_part, data_part);
+		else
+			ptr.right_part =data_insert(ptr.right_part, data_part);
+		return ptr;
+}
+function delete_Node(root_node , value)
+{
+		if (root_node == null)
+			return root_node;
+
+		if (root_node.data_part > value)
+    {
+			root_node.left_part = delete_Node(root_node.left_part, value);
+			return root_node;
+		}
+    else if (root_node.data_part < value)
+    {
+			root_node.right_part = delete_Node(root_node.right_part, value);
+			return root_node;
+		}
+
+		if (root_node.left_part == null)
+    {
+	    var temporary = root_node.right_part;
+			return temporary;
+		}
+    else if (root_node.right_part == null)
+    {
+	    var temporary = root_node.left_part;
+			return temporary;
+		}
+		else
+    {
+
+	    var successorParent = root_node;
+	    var successor = root_node.right_part;
+
+			while (successor.left_part != null)
+      {
+				successorParent = successor;
+				successor = successor.left_part;
+			}
+
+			if (successorParent != root_node)
+				successorParent.left_part = successor.right_part;
+			else
+				successorParent.right_part = successor.right_part;
+			root_node.data_part = successor.data_part;
+			return root_node;
+		}
+}
+function search(root_node, search_element)
+{
+	if(root_node == null)
+	{
+		document.write("<br>Element Not Present: "+search_element);
+    document.write("<br>");
+  }
+	else if(root_node.data_part == search_element)
+	{
+		document.write("<br> Element Present: "+search_element);
+  document.write("<br>")
+	}
+	else if(search_element<= root_node.data_part)
+	{
+		return search(root_node.left_part,search_element);
+	}
+	else
+	{
+		return search(root_node.right_part,search_element);
+	}
+}
+    var root_node = null;
+    root_node = data_insert(root_node, 10);
+  	root_node = data_insert(root_node, 5);
+  	root_node = data_insert(root_node, 20);
+  	root_node = data_insert(root_node, 35);
+  	root_node = data_insert(root_node, 7);
+  	root_node = data_insert(root_node, 61);
+  	root_node = data_insert(root_node, 8);
+
+
+    search(root_node,10);
+
+		document.write("inorder_traversal traversal: <br>");
+	  inorder_traversal(root_node);
+
+		document.write("<br/>Delete 7<br/>");
+		root_node = delete_Node(root_node, 7);
+		document.write("inorder_traversal traversal: <br>");
+	  inorder_traversal(root_node);
+
+		document.write("<br/>Delete 10<br/>");
+		root_node = delete_Node(root_node, 10);
+		document.write("inorder_traversal traversal:<br>");
+	  inorder_traversal(root_node);
+
+    search(root_node,10);
+</script>
+</body>
+</html>
